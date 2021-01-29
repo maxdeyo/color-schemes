@@ -23,8 +23,8 @@ export default function App() {
     <View style={styles.container}>
       <Button
         onPress={()=>setHue(hue+5)}
-        style={{height:100}}><Text>Increment</Text>
-      </Button>
+        style={{height:100}}
+        title='Increment'/>
       <Picker
             selectedValue={myScheme}
             style={{ height: 50, width: 150, alignSelf: 'center'}}
