@@ -9,4 +9,4 @@ Developed to run on Android.
 3. Run ```npm i```
 4. Run ```expo start```
 
-<img width="200" alt="portfolio_view" src="https://github.com/maxdeyo/color-scheme/blob/main/assets/screen_record.gif">
+<img width="200" alt="portfolio_view" src="https://github.com/maxdeyo/color-schemes/blob/master/assets/screen_record.gif">
