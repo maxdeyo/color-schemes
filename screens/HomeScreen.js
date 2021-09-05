@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import {  View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-import Slider from '@react-native-community/slider';
-import { Appbar, Button, BottomNavigation, Provider, Portal, Modal, TextInput } from 'react-native-paper';
+import { Appbar, Button, Provider } from 'react-native-paper';
 
 import { storeData, getData } from '../storage/async_storage';
+import HueSlider from '../components/HueSlider';
+import SchemeVariationPickers from '../components/SchemeVariationPickers';
+import SaveSchemeModal from '../components/SaveSchemeModal';
+import ColorScroller from '../components/ColorScroller';
 
 var ColorScheme = require('color-scheme');
 
@@ -41,7 +43,7 @@ export default function HomeScreen() {
         temp.push({
             title: title,
             colors: colors,
-            id: savedSchemes.length==0 ? 0 : savedSchemes[savedSchemes.length-1].id+1,
+            id: savedSchemes.length == 0 ? 0 : savedSchemes[savedSchemes.length - 1].id + 1,
         });
         setSavedSchemes(temp);
         await storeData(temp);
@@ -55,77 +57,32 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <Provider>
-            <Appbar style={[styles.appbar, { backgroundColor: '#' + colors[0] }]}>
-                <Appbar.Content title="Color Schemes" subtitle="Color Scheme Generator" />
-            </Appbar>
-                <Portal>
-                    <Modal visible={saveModalVisible} onDismiss={hideSaveModal} contentContainerStyle={styles.saveModal}>
-                        <TextInput
-                            style={styles.titleInput}
-                            value={title}
-                            onChangeText={(inp) => setTitle(inp)}
-                            maxLength={30}
-                            placeholder="My Color Scheme..."
-                        />
-                        <Button
-                            onPress={()=>onSaveScheme(colors)}
-                            >Save</Button>
-                    </Modal>
-                </Portal>
-                <View style={[styles.mainContainer, {backgroundColor: '#'+colors[0]}]}>
-                    <View style={styles.sliderContainer}>
-                        <Slider
-                            style={{ width: 200, height: 40, justifyContent: 'center' }}
-                            minimumValue={0}
-                            maximumValue={359}
-                            minimumTrackTintColor="#000000"
-                            maximumTrackTintColor="#000000"
-                            onValueChange={(val) => setHue(val)}
-                        />
-                    </View>
-                    <View style={styles.pickerContainer}>
-                        <Picker
-                            selectedValue={myScheme}
-                            style={{ height: 50, width: 150, alignSelf: 'center' }}
-                            onValueChange={(itemValue) => setMyScheme(itemValue)}
-                        >
-                            <Picker.Item label="Mono" value="mono" />
-                            <Picker.Item label="Contrast" value="contrast" />
-                            <Picker.Item label="Tetrade" value="tetrade" />
-                            <Picker.Item label="Triade" value="triade" />
-                            <Picker.Item label="Analogic" value="analogic" />
-                        </Picker>
-                        <Picker
-                            selectedValue={myVariation}
-                            style={{ height: 50, width: 150, alignSelf: 'center' }}
-                            onValueChange={(itemValue) => setMyVariation(itemValue)}
-                        >
-                            <Picker.Item label="Default" value="Default" />
-                            <Picker.Item label="Pastel" value="pastel" />
-                            <Picker.Item label="Soft" value="soft" />
-                            <Picker.Item label="Light" value="light" />
-                            <Picker.Item label="Hard" value="hard" />
-                        </Picker>
-                    </View>
-                    <SafeAreaView style={styles.safeAreaContainer}>
-                        <ScrollView>
-                            {
-                                colors.map((i) => {
-                                    return <View style={{ backgroundColor: '#' + i, height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                                        <View style={{ backgroundColor: '#afaaaa33', flex: 1, borderRadius: 50, justifyContent: 'center', paddingLeft: 30, paddingRight: 30 }}><Text style={{ textAlignVertical: 'center', textAlign: 'center', fontWeight: 'bold', color: '#fff', fontSize: 28, fontWeight: '100' }}>#{i}</Text></View>
-                                    </View>
-                                })
-                            }
-                        </ScrollView>
-                    </SafeAreaView>
+                <Appbar style={[styles.appbar, { backgroundColor: '#' + colors[0] }]}>
+                    <Appbar.Content title="Color Schemes" subtitle="Color Scheme Generator" />
+                </Appbar>
+                <SaveSchemeModal
+                    title={title}
+                    saveModalVisible={saveModalVisible}
+                    hideSaveModal={hideSaveModal}
+                    setTitle={setTitle}
+                    />
+                <View style={[styles.mainContainer, { backgroundColor: '#' + colors[0] }]}>
+                    <HueSlider
+                        setHue={setHue}/>
+                    <SchemeVariationPickers
+                        myScheme={myScheme}
+                        myVariation={myVariation}
+                        setMyScheme={setMyScheme}
+                        setMyVariation={setMyVariation}/>
+                    <ColorScroller colors={colors} />
                     <Button
                         style={styles.saveButton}
-                        color={'#'+colors[colors.length-1]}
+                        color={'#' + colors[colors.length - 1]}
                         onPress={() => onSavePress(colors)}
                         mode='contained'
                     >
                         Save Color Scheme
-        </Button>
+                    </Button>
                 </View>
             </Provider>
         </View>
@@ -138,10 +95,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: Constants.statusBarHeight
     },
-    safeAreaContainer: {
-        paddingTop: 10,
-        flex: 5
-    },
     paragraph: {
         margin: 24,
         fontSize: 18,
@@ -151,12 +104,6 @@ const styles = StyleSheet.create({
     appbar: {
         flex: 1,
         backgroundColor: '#000000'
-    },
-    pickerContainer: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        flex: 1,
-        justifyContent: 'center'
     },
     mainContainer: {
         flex: 9
@@ -169,16 +116,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center'
-    },
-    saveModal: {
-        flex: 0.3,
-        backgroundColor: 'white',
-        padding: 20,
-        margin: 40
-    },
-    titleInput: {
-        flex: 1,
-        alignSelf: 'center',
-        margin: 20
     }
 });
