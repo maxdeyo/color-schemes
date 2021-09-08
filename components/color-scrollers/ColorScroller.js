@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ScrollView, TouchableHighlight } from 'react-native';
 import ColorBar from './ColorBar'
 
 export default function ColorScroller(props) {
@@ -7,9 +7,9 @@ export default function ColorScroller(props) {
         <SafeAreaView style={styles.safeAreaContainer}>
             <ScrollView>
                 {
-                    props.colors.map((color) => {
+                    props.colors.map((color, index) => {
                         return (
-                            <ColorBar color={color}/>
+                            <ColorBar key={index.toString()+color} color={color} onPress={()=>props.selectColor(index)} />
                         )
                     })
                 }

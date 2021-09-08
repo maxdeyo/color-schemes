@@ -4,8 +4,8 @@ const STORAGE_KEY = '@color_schemes';
 
 export const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value)
-      await AsyncStorage.setItem(STORAGE_KEY, jsonValue)
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
     } catch (e) {
       // saving error
       console.log(e);

@@ -3,28 +3,22 @@ import { BottomNavigation, Text } from 'react-native-paper';
 
 import HomeScreen from './screens/HomeScreen';
 import SavedSchemesScreen from './screens/SavedSchemesScreen';
-import DemoScreen from './screens/DemoScreen';
-
-import {storeData} from './storage/async_storage';
+import { LogBox } from 'react-native';
 
 const App = () => {
-  /*React.useEffect(()=>{
-    const checkAsync = async () => {
-      await storeData([]);
-  }
-  checkAsync();
-  }, []);*/
+  React.useEffect(() => {
+    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+  }, [])
+
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'home', title: 'Home', icon: 'home' },
-    { key: 'savedSchemes', title: 'Saved Schemes', icon: 'folder' },
-    { key: 'demoScreen', title: 'Demo', icon: 'folder' },
+    { key: 'savedSchemes', title: 'Saved Schemes', icon: 'folder' }
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
     home: () => <HomeScreen />,
-    savedSchemes: () => <SavedSchemesScreen />,
-    demoScreen: () => <DemoScreen />
+    savedSchemes: () => <SavedSchemesScreen />
   });
 
   return (

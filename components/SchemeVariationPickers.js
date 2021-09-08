@@ -7,7 +7,7 @@ export default function SchemeVariationPickers(props) {
         <View style={styles.pickerContainer}>
             <Picker
                 selectedValue={props.myScheme}
-                style={styles.picker}
+                style={[styles.picker, {color: props.color}]}
                 onValueChange={(itemValue) => props.setMyScheme(itemValue)}
             >
                 <Picker.Item label="Mono" value="mono" />
@@ -18,7 +18,7 @@ export default function SchemeVariationPickers(props) {
             </Picker>
             <Picker
                 selectedValue={props.myVariation}
-                style={styles.picker}
+                style={[styles.picker, {color: props.color}]}
                 onValueChange={(itemValue) => props.setMyVariation(itemValue)}
             >
                 <Picker.Item label="Default" value="Default" />

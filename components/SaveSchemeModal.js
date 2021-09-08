@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import {  Portal, Modal, TextInput } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+import {  Portal, Modal, TextInput, Button} from 'react-native-paper';
 
 export default function SaveSchemeModal(props) {
     return (
@@ -8,13 +8,14 @@ export default function SaveSchemeModal(props) {
             <Modal visible={props.saveModalVisible} onDismiss={props.hideSaveModal} contentContainerStyle={styles.saveModal}>
                 <TextInput
                     style={styles.titleInput}
+                    multiline={false}
                     value={props.title}
                     onChangeText={(inp) => props.setTitle(inp)}
                     maxLength={30}
-                    placeholder="My Color Scheme..."
+                    placeholder={props.title}
                 />
                 <Button
-                    onPress={() => onSaveScheme(colors)}
+                    onPress={() => props.onSaveScheme(props.colors)}
                 >Save</Button>
             </Modal>
         </Portal>
@@ -30,7 +31,8 @@ const styles = StyleSheet.create({
     },
     titleInput: {
         flex: 1,
-        alignSelf: 'center',
-        margin: 20
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        textAlign: 'center'
     }
 })
